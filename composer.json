@@ -15,7 +15,7 @@
     "license": "MIT",
     "require": {
         "php": ">=5.6",
-        "laravelcollective/html": "^5.4.0",
+        "laravelcollective/html": "^6",
         "illuminate/database": "*",
         "spatie/laravel-medialibrary": "^7"
     },
