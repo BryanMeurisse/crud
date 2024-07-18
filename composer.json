@@ -17,7 +17,7 @@
         "php": ">=5.6",
         "laravelcollective/html": "^6",
         "illuminate/database": "*",
-        "spatie/laravel-medialibrary": "^7"
+        "spatie/laravel-medialibrary": "^9.12"
     },
     "autoload": {
         "psr-4": {
