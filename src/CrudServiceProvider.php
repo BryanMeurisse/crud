@@ -4,6 +4,7 @@ namespace Eliurkis\Crud;
 
 use Illuminate\Support\ServiceProvider;
 use Route;
+use Spatie\Html\HtmlServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
 {
@@ -37,7 +38,7 @@ class CrudServiceProvider extends ServiceProvider
         include __DIR__.'/routes.php';
 
         // Register provider dependencies
-        $this->app->register(\Collective\Html\HtmlServiceProvider::class);
+        $this->app->register(HtmlServiceProvider::class);
 
         // Register aliases dependencies
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
