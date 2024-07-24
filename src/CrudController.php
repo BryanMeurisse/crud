@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Str;
+
 class CrudController extends Controller
 {
     protected $route;
@@ -660,7 +662,7 @@ class CrudController extends Controller
             : ($this->fields[$name]['default_value'] ?? null);
 
         // Define field type class namespace
-        $className = '\Eliurkis\Crud\FieldTypes\\'.studly_case($properties['type']);
+        $className = Str::studly($properties['type']);
         if (!class_exists($className)) {
             return;
         }
