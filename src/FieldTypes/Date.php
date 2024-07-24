@@ -3,6 +3,7 @@
 namespace Eliurkis\Crud\FieldTypes;
 
 use Illuminate\Support\Facades\Input;
+use Spatie\Html\Facades\Html;
 
 class Date
 {
@@ -10,7 +11,10 @@ class Date
     {
         return '<div class="input-group date">
                     <span class="input-group-addon"><i class="far fa-calendar-alt"></i></span>
-                    '.(\Form::text($name, Input::old($name, $value), $properties['attributes'])).'
+                    ' . Html::text($name)
+                            ->value(Input::old($name, $value))
+                            ->attributes($properties['attributes'] ?? [])
+                            ->toHtml() . '
                 </div>';
     }
 }

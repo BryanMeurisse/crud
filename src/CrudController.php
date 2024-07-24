@@ -580,19 +580,15 @@ class CrudController extends Controller
 
     protected function prepareFields()
     {
-        if ($this->entityInstance) {
-            \Form::model($this->entityInstance);
-        }
-
         foreach ($this->fields as $name => $properties) {
             $this->fields[$name]['html'] = $this->prepareField($name, $properties);
             $this->fields[$name]['value'] = $this->entityInstance->$name ?? null;
             $this->fields[$name]['value_text'] = $this->prepareFieldShow($name, $properties);
         }
-
+    
         return $this->fields;
     }
-
+    
     protected function prepareFieldShow($name, $properties = [])
     {
         // Init

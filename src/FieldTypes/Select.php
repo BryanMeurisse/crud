@@ -3,16 +3,14 @@
 namespace Eliurkis\Crud\FieldTypes;
 
 use Illuminate\Support\Facades\Input;
+use Spatie\Html\Facades\Html;
 
 class Select
 {
     public static function prepare($name, $options = [], $value = null, $properties = [])
     {
-        return \Form::select(
-            $name,
-            $options,
-            Input::old($name, $value),
-            isset($properties['attributes']) ? $properties['attributes'] : []
-        );
+        return Html::select($name, $options)
+                   ->value(Input::old($name, $value))
+                   ->attributes($properties['attributes'] ?? []);
     }
 }

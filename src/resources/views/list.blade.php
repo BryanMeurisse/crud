@@ -20,20 +20,24 @@
         </div>
         @if (count($searchable))
             <div class="col-sm-4 col-md-offset-4">
-                {!! Form::open(['method' => 'get']) !!}
+                {{ html()->form('GET')->open() }}
                 <div class="input-group">
-                    <input type="text" name="q" value="{{ $request->get('q') }}" placeholder="{{ $t['search'] or trans('eliurkis::crud.search') }}" class="input-sm form-control">
+                    <input type="text" name="q" value="{{ $request->get('q') }}" placeholder="{{ $t['search'] ?? trans('eliurkis::crud.search') }}" class="input-sm form-control">
                     <span class="input-group-btn">
-                    <button type="submit" class="btn btn-sm btn-primary">{{ $t['go'] or trans('eliurkis::crud.go') }}</button>
-                    <a href="{{ route($route.'.index') }}" class="btn btn-sm btn-success">{{ $t['reset'] or trans('eliurkis::crud.reset') }}</a>
-                </span>
+                        {{ html()->button()
+                            ->class('btn btn-sm btn-primary')
+                            ->type('submit')
+                            ->content($t['go'] ?? trans('eliurkis::crud.go'))
+                        }}
+                        <a href="{{ route($route.'.index') }}" class="btn btn-sm btn-success">{{ $t['reset'] ?? trans('eliurkis::crud.reset') }}</a>
+                    </span>
                 </div>
                 @if ($request->get('filter'))
                     @foreach($request->get('filter') as $filter => $value)
                         <input type="hidden" name="filter[{{ $filter }}]" value="{{ $value }}">
                     @endforeach
                 @endif
-                {!! Form::close() !!}
+                {{ html()->form()->close() }}
             </div>
         @endif
     </div>
@@ -55,12 +59,12 @@
                     @foreach($columns as $name)
                         <td>
                             @if (!isset($fields[$name]))
-                                {!! $row->$name or 'N/A' !!}
+                                {!! $row->$name ?? 'N/A' !!}
                             @elseif ($fields[$name]['type'] == 'select')
                                 @if (isset($fields[$name]['config']['options']) && count($fields[$name]['config']['options']))
-                                    {{ $fields[$name]['config']['options'][$row->$name] or 'N/A' }}
+                                    {{ $fields[$name]['config']['options'][$row->$name] ?? 'N/A' }}
                                 @else
-                                    {{ $row->{$fields[$name]['config']['rel']}->{$fields[$name]['config']['field_value']} or 'N/A' }}
+                                    {{ $row->{$fields[$name]['config']['rel']}->{$fields[$name]['config']['field_value']} ?? 'N/A' }}
                                 @endif
                             @elseif ($fields[$name]['type'] == 'date' && is_object($row->$name))
                                 {{ !empty($row->$name) && $row->$name->diff(Carbon::now())->format('%y') != date('Y') ?  $row->$name->format('m/d/Y') : 'N/A' }}

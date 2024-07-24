@@ -3,11 +3,14 @@
 namespace Eliurkis\Crud\FieldTypes;
 
 use Illuminate\Support\Facades\Input;
+use Spatie\Html\Facades\Html;
 
 class Textarea
 {
     public static function prepare($name, $value = null, $properties = [])
     {
-        return \Form::textarea($name, Input::old($name, $value), $properties['attributes']);
+        return Html::textarea($name)
+                   ->value(Input::old($name, $value))
+                   ->attributes($properties['attributes']);
     }
 }
