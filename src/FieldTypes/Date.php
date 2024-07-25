@@ -12,7 +12,7 @@ class Date
         return '<div class="input-group date">
                     <span class="input-group-addon"><i class="far fa-calendar-alt"></i></span>
                     ' . Html::text($name)
-                            ->value(Input::old($name, $value))
+                            ->value(old($name, $value))
                             ->attributes($properties['attributes'] ?? [])
                             ->toHtml() . '
                 </div>';

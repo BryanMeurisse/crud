@@ -10,7 +10,7 @@ class Select
     public static function prepare($name, $options = [], $value = null, $properties = [])
     {
         return Html::select($name, $options)
-                   ->value(Input::old($name, $value))
+                   ->value(old($name, $value))
                    ->attributes($properties['attributes'] ?? []);
     }
 }

@@ -59,9 +59,11 @@ class CrudController extends Controller
 
     public function __construct($entity, $config = [])
     {
+
         $this->entity = $entity;
 
-        $config = count($config) ? $config : config('crud.'.$this->route);
+        $config = count($config) ? $config : config('crud.' . $this->route);
+
 
         if (is_array($config)) {
             foreach ($config as $key => $value) {
@@ -71,19 +73,19 @@ class CrudController extends Controller
 
         $this->actions = [
             'details' => function ($row, $route) {
-                return '<a href="'.route($route.'.show', $row->{$row->getKeyName()}).'" class="btn-default btn btn-xs">
+                return '<a href="' . route($route . '.show', $row->{$row->getKeyName()}) . '" class="btn-default btn btn-xs">
                             <i class="fas fa-eye"></i>
                         </a>';
             },
             'edit'    => function ($row, $route) {
-                return '<a href="'.route($route.'.edit', $row->{$row->getKeyName()}).'" class="btn-primary btn btn-xs edit_element">
+                return '<a href="' . route($route . '.edit', $row->{$row->getKeyName()}) . '" class="btn-primary btn btn-xs edit_element">
                             <i class="far fa-edit"></i>
                         </a>';
             },
             'delete'  => function ($row, $route) {
-                return '<a href="'.route($route.'.destroy', $row->{$row->getKeyName()}).'"
+                return '<a href="' . route($route . '.destroy', $row->{$row->getKeyName()}) . '"
                            class="btn-danger btn btn-xs delete_element"
-                           onclick="return confirm(\''.trans('eliurkis::crud.confirmation_delete').'\');">
+                           onclick="return confirm(\'' . trans('eliurkis::crud.confirmation_delete') . '\');">
                             <i class="far fa-trash-alt"></i>
                         </a>';
             },
@@ -227,10 +229,10 @@ class CrudController extends Controller
 
         DB::commit();
 
-        event($this->route.'.store', [$row, $mediaFiles]);
+        event($this->route . '.store', [$row, $mediaFiles]);
 
         return redirect()
-            ->route($this->route.'.index')
+            ->route($this->route . '.index')
             ->with('success', isset($this->textsGeneral['save_action'])
                 ? $this->textsGeneral['save_action']
                 : trans('eliurkis::crud.save_action'));
@@ -238,6 +240,7 @@ class CrudController extends Controller
 
     public function edit($id)
     {
+
         if (!$this->entityInstance) {
             $this->entityInstance = $this->entity->findOrFail($id);
         }
@@ -285,10 +288,10 @@ class CrudController extends Controller
 
         DB::commit();
 
-        event($this->route.'.update', [$row, $mediaFiles]);
+        event($this->route . '.update', [$row, $mediaFiles]);
 
         return redirect()
-            ->route($this->route.'.index', $this->getParamsFilters($row))
+            ->route($this->route . '.index', $this->getParamsFilters($row))
             ->with('success', isset($this->textsGeneral['save_action'])
                 ? $this->textsGeneral['save_action']
                 : trans('eliurkis::crud.save_action'));
@@ -300,10 +303,10 @@ class CrudController extends Controller
             $row = $this->entity->findOrFail($id);
             $row->delete();
 
-            event($this->route.'.destroy', [$row]);
+            event($this->route . '.destroy', [$row]);
         } catch (ModelNotFoundException $e) {
             return redirect()
-                ->route($this->route.'.index')
+                ->route($this->route . '.index')
                 ->with('error', __('The element that you are trying to delete does not exist'));
         } catch (\Exception $e) {
             \Log::error($e);
@@ -312,12 +315,12 @@ class CrudController extends Controller
             }
 
             return redirect()
-                ->route($this->route.'.index')
+                ->route($this->route . '.index')
                 ->with('error', __('An error occurred, try again'));
         }
 
         return redirect()
-            ->route($this->route.'.index')
+            ->route($this->route . '.index')
             ->with('success', isset($this->textsGeneral['delete_action'])
                 ? $this->textsGeneral['delete_action']
                 : trans('eliurkis::crud.delete_action'));
@@ -388,8 +391,8 @@ class CrudController extends Controller
                 if (isset($urlParams['filter'][$filter])) {
                     unset($urlParams['filter'][$filter]);
                 }
-                $this->fields[$filter]['attributes']['data-filter-url'] = route($this->route.'.index', $urlParams)
-                    .(count($urlParams) ? '&' : '?');
+                $this->fields[$filter]['attributes']['data-filter-url'] = route($this->route . '.index', $urlParams)
+                    . (count($urlParams) ? '&' : '?');
 
                 // Create array
                 $this->action = 'list';
@@ -414,7 +417,7 @@ class CrudController extends Controller
 
         if ($request->get('filter')) {
             foreach ($request->get('filter') as $field => $value) {
-                $rows->appends(['filter['.$field.']' => $value]);
+                $rows->appends(['filter[' . $field . ']' => $value]);
             }
         }
 
@@ -434,7 +437,7 @@ class CrudController extends Controller
 
             $entity = $entity->where(function (Builder $query) use ($request, $searchableCols) {
                 foreach ($searchableCols as $field) {
-                    $query->orWhere($field, 'like', '%'.$request->get('q').'%');
+                    $query->orWhere($field, 'like', '%' . $request->get('q') . '%');
                 }
             });
 
@@ -506,8 +509,8 @@ class CrudController extends Controller
         $links = ['index', 'create', 'store'];
 
         foreach ($links as $link) {
-            if (!isset($this->links[$link]) && Route::has($this->route.'.'.$link)) {
-                $this->links[$link] = route($this->route.'.'.$link);
+            if (!isset($this->links[$link]) && Route::has($this->route . '.' . $link)) {
+                $this->links[$link] = route($this->route . '.' . $link);
             }
         }
 
@@ -582,15 +585,17 @@ class CrudController extends Controller
 
     protected function prepareFields()
     {
+
+
         foreach ($this->fields as $name => $properties) {
             $this->fields[$name]['html'] = $this->prepareField($name, $properties);
             $this->fields[$name]['value'] = $this->entityInstance->$name ?? null;
             $this->fields[$name]['value_text'] = $this->prepareFieldShow($name, $properties);
         }
-    
+
         return $this->fields;
     }
-    
+
     protected function prepareFieldShow($name, $properties = [])
     {
         // Init
@@ -608,7 +613,8 @@ class CrudController extends Controller
 
         if ($this->entityInstance) {
             if (($properties['type'] === 'date' || $properties['type'] === 'datetime') &&
-                $this->entityInstance->$name != '') {
+                $this->entityInstance->$name != ''
+            ) {
                 $fieldValue = $this->entityInstance->$name;
 
                 if (!is_object($fieldValue)) {
@@ -621,12 +627,12 @@ class CrudController extends Controller
             }
 
             if (substr($properties['type'], 0, 4) === 'file' && $this->entityInstance->getMedia($name)->last()) {
-                $value = '<a href="'.route($this->route.'.download', [$this->entityInstance->id, $name]).
-                    '" target="_blank">'.(
-                    isset($this->fields[$name]['link_name'])
+                $value = '<a href="' . route($this->route . '.download', [$this->entityInstance->id, $name]) .
+                    '" target="_blank">' . (
+                        isset($this->fields[$name]['link_name'])
                         ? $this->fields[$name]['link_name']
                         : 'download'
-                    ).'</a>';
+                    ) . '</a>';
             }
 
             if (isset($config['entity'])) {
@@ -657,12 +663,13 @@ class CrudController extends Controller
 
         $value = $this->entityInstance
             ? isset($properties['value_alias'])
-                ? $this->entityInstance->{$properties['value_alias']}
-                : $this->entityInstance->$name
+            ? $this->entityInstance->{$properties['value_alias']}
+            : $this->entityInstance->$name
             : ($this->fields[$name]['default_value'] ?? null);
 
         // Define field type class namespace
-        $className = Str::studly($properties['type']);
+        $className = '\Eliurkis\Crud\FieldTypes\\'.Str::studly($properties['type']);
+
         if (!class_exists($className)) {
             return;
         }

@@ -10,7 +10,7 @@ class Number
     public static function prepare($name, $value = null, $properties = [])
     {
         return Html::input('number', $name)
-                   ->value(Input::old($name, $value))
+                   ->value(old($name, $value))
                    ->attributes($properties['attributes'] ?? []);
     }
 }

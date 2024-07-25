@@ -10,7 +10,7 @@ class Textarea
     public static function prepare($name, $value = null, $properties = [])
     {
         return Html::textarea($name)
-                   ->value(Input::old($name, $value))
+                   ->value(old($name, $value))
                    ->attributes($properties['attributes']);
     }
 }

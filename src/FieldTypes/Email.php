@@ -10,7 +10,7 @@ class Email
     public static function prepare($name, $value = null, $properties = [])
     {
         return Html::email($name)
-                   ->value(Input::old($name, $value))
+                   ->value(old($name, $value))
                    ->attributes($properties['attributes'] ?? []);
     }
 }
